@@ -482,9 +482,19 @@ Candy.Core.Event = (function(self, Strophe, $) {
 			}
 
 			if(directInvite.length > 0) {
+				fromUser = Candy.Core.getRoster().get(msg.attr('from'));
+				room = Candy.Core.getRoom(directInvite.attr('jid'));
+
+				/*
+				 * (Candy.Core.Chatroom) room -
+				 * (Candy.Core.Contact) from -
+				 * (String) reason -
+				 * (String) password -
+				 * (String) continuedThread -
+				 */
 				invite = {
-					roomJid: directInvite.attr('jid'),
-					from: msg.attr('from'),
+					room: room,
+					from: fromUser,
 					reason: directInvite.attr('reason'),
 					password: directInvite.attr('password'),
 					continuedThread: directInvite.attr('thread')
