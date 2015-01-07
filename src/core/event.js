@@ -625,20 +625,21 @@ Candy.Core.Event = (function(self, Strophe, $) {
 						}
 					}
 				}
+
+				var room = Candy.Core.getRoom(roomJid);
+
 				/** Event: candy:core.presence.room
 				 * Room presence updates
 				 *
 				 * Parameters:
-				 *   (String) roomJid - Room JID
-				 *   (String) roomName - Room name
+				 *   (Candy.Core.Chatroom) room - The room object
 				 *   (Candy.Core.ChatUser) user - User which does the presence update
 				 *   (String) action - Action [kick, ban, leave, join]
 				 *   (Candy.Core.ChatUser) currentUser - Current local user
 				 *   (Boolean) isNewRoom - Whether the room is new (has just been created)
 				 */
 				$(Candy).triggerHandler('candy:core.presence.room', {
-					'roomJid': roomJid,
-					'roomName': room.getName(),
+					'room': room,
 					'user': user,
 					'action': action,
 					'currentUser': currentUser,
