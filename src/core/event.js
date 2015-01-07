@@ -764,7 +764,9 @@ Candy.Core.Event = (function(self, Strophe, $) {
 					if(msg.attr('type') === 'chat' || msg.attr('type') === 'normal') {
 						var from = Candy.Util.unescapeJid(msg.attr('from')),
 							bareFrom = Strophe.getBareJidFromJid(from),
-							isNoConferenceRoomJid = !Candy.Core.getRoom(bareFrom);
+							isNoConferenceRoomJid = !Candy.Core.getRoom(bareFrom),
+							fromUser = Candy.Core.getRoster().get(from);
+
 
 						if (isNoConferenceRoomJid) {
 							roomJid = bareFrom;
@@ -798,7 +800,7 @@ Candy.Core.Event = (function(self, Strophe, $) {
 						message.xhtmlMessage = xhtmlMessage;
 					}
 
-					self.Jabber.Room._checkForChatStateNotification(msg, roomJid, name);
+					self.Jabber.Room._checkForChatStateNotification(msg, roomJid, fromUser);
 				// Unhandled message
 				} else {
 					return true;
@@ -862,9 +864,10 @@ Candy.Core.Event = (function(self, Strophe, $) {
 				return true;
 			},
 
-			_checkForChatStateNotification: function (msg, roomJid, name) {
+			_checkForChatStateNotification: function (msg, roomJid, fromUser) {
 				var chatStateElements = msg.children('*[xmlns="http://jabber.org/protocol/chatstates"]');
 				if (chatStateElements.length > 0) {
+					var room = Candy.Core.getRoom(roomJid);
 					/** Event: candy:core:message:chatstate
 					 * Triggers on any recieved chatstate notification.
 					 *
@@ -874,13 +877,13 @@ Candy.Core.Event = (function(self, Strophe, $) {
 					 *
 					 * Message Object Parameters:
 					 *   (String) name - User name
-					 *   (String) roomJid - Room jid
+					 *   (Candy.Core.Chatroom) room - Room jid
 					 *   (String) chatstate - Chatstate being indicated. ("active", "composing", "paused", "inactive", "gone")
 					 *
 					 */
 					$(Candy).triggerHandler('candy:core:message:chatstate', {
-						name: name,
-						roomJid: roomJid,
+						name: fromUser.getNick(),
+						room: room,
 						chatstate: chatStateElements[0].tagName
 					});
 				}
