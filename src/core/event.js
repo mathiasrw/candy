@@ -706,12 +706,7 @@ Candy.Core.Event = (function(self, Strophe, $) {
 				Candy.Core.log('[Jabber:Room] Presence Error');
 				var from = Candy.Util.unescapeJid(msg.attr('from')),
 					roomJid = Strophe.getBareJidFromJid(from),
-					room = Candy.Core.getRooms()[roomJid],
-					roomName = room.getName();
-
-				// Presence error: Remove room from array to prevent error when disconnecting
-				Candy.Core.removeRoom(roomJid);
-				room = undefined;
+					room = Candy.Core.getRoom(roomJid);
 
 				/** Event: candy:core.presence.error
 				 * Triggered when a presence error happened
@@ -719,14 +714,12 @@ Candy.Core.Event = (function(self, Strophe, $) {
 				 * Parameters:
 				 *   (Object) msg - jQuery object of XML message
 				 *   (String) type - Error type
-				 *   (String) roomJid - Room jid
-				 *   (String) roomName - Room name
+				 *   (Candy.Core.Chatroom) room -- room object with presence error
 				 */
 				$(Candy).triggerHandler('candy:core.presence.error', {
 					'msg' : msg,
 					'type': msg.children('error').children()[0].tagName.toLowerCase(),
-					'roomJid': roomJid,
-					'roomName': roomName
+					'room': room;
 				});
 				return true;
 			},
