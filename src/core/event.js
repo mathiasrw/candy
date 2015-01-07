@@ -673,19 +673,21 @@ Candy.Core.Event = (function(self, Strophe, $) {
 				 * Also triggered when the local client gets kicked or banned from a room.
 				 *
 				 * Parameters:
-				 *   (String) roomJid - Room
-				 *   (String) roomName - Name of room
+				 *   (Candy.Core.Chatroom) room -
 				 *   (String) type - Presence type [kick, ban, leave]
 				 *   (String) reason - When type equals kick|ban, this is the reason the moderator has supplied.
-				 *   (String) actor - When type equals kick|ban, this is the moderator which did the kick
+				 *   (Candy.Core.Chatuser) actor - When type equals kick|ban, this is the moderator which did the kick
 				 *   (Candy.Core.ChatUser) user - user which leaves the room
 				 */
+
+				var room = Candy.Core.getRoom(roomJid)
+				var actorUser = Candy.Core.getRoster(actor);
+
 				$(Candy).triggerHandler('candy:core.presence.leave', {
-					'roomJid': roomJid,
-					'roomName': roomName,
+					'room': room,
 					'type': action,
 					'reason': reason,
-					'actor': actor,
+					'actor': actorUser,
 					'user': user
 				});
 			},
