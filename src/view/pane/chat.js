@@ -831,11 +831,13 @@ Candy.View.Pane = (function(self, $) {
       getMenuLinks: function(roomJid, user, elem) {
         var menulinks, id;
 
+        var room = Candy.Core.getRoom(roomJid);
+
         var evtData = {
-          'roomJid' : roomJid,
+          'room' : room,
           'user' : user,
           'elem': elem,
-          'menulinks': this.initialMenuLinks(elem)
+          'menulinks': this.initialMenuLinks()
         };
 
         /** Event: candy:view.roster.context-menu
@@ -845,9 +847,10 @@ Candy.View.Pane = (function(self, $) {
          * key "menulinks" containing the menulink object.
          *
          * Parameters:
-         *   (String) roomJid - Room on which the menu should be displayed
+         *   (Candy.Core.Chatroom) room - Room on which the menu should be displayed
          *   (Candy.Core.ChatUser) user - User
          *   (jQuery.Element) elem - Parent element of the context menu
+         *   (Object) menulinks - object containing initial menulinks
          */
         $(Candy).triggerHandler('candy:view.roster.context-menu', evtData);
 
