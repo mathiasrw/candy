@@ -796,16 +796,18 @@ Candy.View.Pane = (function(self, $) {
             .addClass(posLeft.backgroundPositionAlignment + '-' + posTop.backgroundPositionAlignment)
             .fadeIn('fast');
 
+          var room = Candy.Core.getRoom(roomJid);
+
           /** Event: candy:view.roster.after-context-menu
            * After context menu display
            *
            * Parameters:
-           *   (String) roomJid - room where the context menu has been triggered
+           *   (Candy.Core.Chatroom) room - room where the context menu has been triggered
            *   (Candy.Core.ChatUser) user - User
            *   (jQuery.Element) element - Menu element
            */
           $(Candy).triggerHandler('candy:view.roster.after-context-menu', {
-            'roomJid' : roomJid,
+            'room' : room,
             'user' : user,
             'element': menu
           });
