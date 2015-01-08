@@ -183,7 +183,9 @@ Candy.View.Observer = (function(self, $) {
 					});
 				}, 5000);
 
-				var evtData = { type: args.type, reason: args.reason, roomJid: args.roomJid, user: args.user };
+				var room = Candy.Core.getRoom(args.roomJid);
+
+				var evtData = { type: args.type, reason: args.reason, room: room, user: args.user };
 
 				/** Event: candy:view.presence
 				 * Presence update when kicked or banned
@@ -191,7 +193,7 @@ Candy.View.Observer = (function(self, $) {
 				 * Parameters:
 				 *   (String) type - Presence type [kick, ban]
 				 *   (String) reason - Reason for the kick|ban [optional]
-				 *   (String) roomJid - Room JID
+				 *   (Candy.Core.Chatroom) room - The room object
 				 *   (Candy.Core.ChatUser) user - User which has been kicked or banned
 				 */
 				$(Candy).triggerHandler('candy:view.presence', [evtData]);
