@@ -138,14 +138,19 @@ Candy.View.Pane = (function(self, $) {
           self.Room.setFocusToForm(roomJid);
           self.Room.scrollToBottom(roomJid);
 
+          var roomObject = Candy.Core.getRoom(roomJid);
+
           /** Event: candy:view.room.after-show
            * After showing a room
            *
            * Parameters:
-           *   (String) roomJid - Room JID
+           *   (String) room - Room object
            *   (jQuery.Element) element - Room element
            */
-          $(Candy).triggerHandler('candy:view.room.after-show', evtData);
+          $(Candy).triggerHandler('candy:view.room.after-show', {
+            room: roomObject,
+            element: roomElement
+          });
 
         } else {
           elem.hide();
