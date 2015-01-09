@@ -626,8 +626,6 @@ Candy.Core.Event = (function(self, Strophe, $) {
 					}
 				}
 
-				var room = Candy.Core.getRoom(roomJid);
-
 				/** Event: candy:core.presence.room
 				 * Room presence updates
 				 *
