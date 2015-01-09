@@ -138,10 +138,9 @@ Candy.View.Pane = (function(self, $) {
            * After showing a room
            *
            * Parameters:
-           *   (String) roomJid - Room JID
-           *   (jQuery.Element) element - Room element
+           *   (String) room - Room object
            */
-          $(Candy).triggerHandler('candy:view.room.after-show', roomObject);
+          $(Candy).triggerHandler('candy:view.room.after-show', { room: roomObject});
         } else {
           elem.hide();
 
@@ -149,10 +148,9 @@ Candy.View.Pane = (function(self, $) {
            * After hiding a room
            *
            * Parameters:
-           *   (String) roomJid - Room JID
-           *   (jQuery.Element) element - Room element
+           *   (String) room - Room object
            */
-          $(Candy).triggerHandler('candy:view.room.after-hide', roomObject);
+          $(Candy).triggerHandler('candy:view.room.after-hide', { room: roomObject});
         }
       });
     },
