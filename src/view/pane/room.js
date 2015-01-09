@@ -119,15 +119,11 @@ Candy.View.Pane = (function(self, $) {
      *   candy:view.room.after-hide using {roomJid, element}
      */
     show: function(roomJid) {
-      var roomId = self.Chat.rooms[roomJid].id,
-        evtData;
+      var roomId = self.Chat.rooms[roomJid].id;
+      var roomObject = Candy.Core.getRoom(roomJid);
 
       $('.room-pane').each(function() {
         var elem = $(this);
-        evtData = {
-          'roomJid': elem.attr('data-roomjid'),
-          'element' : elem
-        };
 
         if(elem.attr('id') === ('chat-room-' + roomId)) {
           elem.show();
@@ -145,8 +141,7 @@ Candy.View.Pane = (function(self, $) {
            *   (String) roomJid - Room JID
            *   (jQuery.Element) element - Room element
            */
-          $(Candy).triggerHandler('candy:view.room.after-show', evtData);
-
+          $(Candy).triggerHandler('candy:view.room.after-show', roomObject);
         } else {
           elem.hide();
 
@@ -157,7 +152,7 @@ Candy.View.Pane = (function(self, $) {
            *   (String) roomJid - Room JID
            *   (jQuery.Element) element - Room element
            */
-          $(Candy).triggerHandler('candy:view.room.after-hide', evtData);
+          $(Candy).triggerHandler('candy:view.room.after-hide', roomObject);
         }
       });
     },
