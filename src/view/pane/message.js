@@ -42,11 +42,13 @@ Candy.View.Pane = (function(self, $) {
     submit: function(event) {
       var roomJid = Candy.View.getCurrent().roomJid,
         room = Candy.View.Pane.Chat.rooms[roomJid],
+        roomObject = Candy.Core.getRoom(roomJid),
         roomType = room.type,
         targetJid = room.targetJid,
         message = $(this).children('.field').val().substring(0, Candy.View.getOptions().crop.message.body),
         xhtmlMessage,
         evtData = {
+          room: roomObject,
           roomJid: roomJid,
           message: message,
           xhtmlMessage: xhtmlMessage
