@@ -185,17 +185,17 @@ Candy.View.Pane = (function(self, $) {
       self.Room.appendToMessagePane(roomJid, html);
       self.Room.scrollToBottom(roomJid);
 
+      var roomObject = Candy.Core.getRoom(roomJid);
+
       /** Event: candy:view.room.after-subject-change
        * After changing the subject of a room
        *
        * Parameters:
-       *   (String) roomJid - Room JID
-       *   (jQuery.Element) element - Room element
+       *   (Candy.Core.Chatroom) room - Room object
        *   (String) subject - New subject
        */
       $(Candy).triggerHandler('candy:view.room.after-subject-change', {
-        'roomJid': roomJid,
-        'element' : self.Room.getPane(roomJid),
+        'room': roomObject,
         'subject' : subject
       });
     },
