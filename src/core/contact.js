@@ -19,10 +19,11 @@
 Candy.Core.Contact = function(stropheRosterItem) {
   /** Object: data
    * Strophe Roster plugin item model containing:
-   * - jid
-   * - name
+   * - (String) jid
+   * - (String) name
    * - subscription
    * - groups
+   * - (Boolean) inRoster
    */
   this.data = stropheRosterItem;
 };
@@ -133,6 +134,10 @@ Candy.Core.Contact.prototype.getStatus = function() {
 
   return status;
 };
+
+Candy.Core.Contact.prototype.isInRoster = function() {
+  return this.data.inRoster;
+}
 
 Candy.Core.Contact.prototype._weightForStatus = function(status) {
   switch (status) {

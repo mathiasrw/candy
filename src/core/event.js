@@ -264,6 +264,7 @@ Candy.Core.Event = (function(self, Strophe, $) {
 		},
 
 		_addRosterItem: function(item) {
+			item.inRoster = true;
 			var user = new Candy.Core.Contact(item);
 			Candy.Core.getRoster().add(user);
 			return user;
@@ -457,12 +458,20 @@ Candy.Core.Event = (function(self, Strophe, $) {
 				directInvite = msg.find('x[xmlns="jabber:x:conference"]'),
 				invite;
 
+			var fromUser;
+
 			if(mediatedInvite.length > 0) {
 				var passwordNode = msg.find('password'),
 					password,
 					reasonNode = mediatedInvite.find('reason'),
 					reason,
 					continueNode = mediatedInvite.find('continue');
+
+				if (!fromUser = Candy.Core.getRoster().get(mediatedInvite.attr('from'))) {
+					var fromUser = new Candy.Core.Contact;
+					fromUser.data.jid = mediatedInvite.attr('from');
+					fromUser.data.inRoster = false;
+				}
 
 				if(passwordNode.text() !== '') {
 					password = passwordNode.text();
@@ -472,9 +481,11 @@ Candy.Core.Event = (function(self, Strophe, $) {
 					reason = reasonNode.text();
 				}
 
+				fromUser.jid = mediatedInvite.attr('from');
+
 				invite = {
 					roomJid: msg.attr('from'),
-					from: mediatedInvite.attr('from'),
+					from: fromUser,
 					reason: reason,
 					password: password,
 					continuedThread: continueNode.attr('thread')
@@ -482,8 +493,11 @@ Candy.Core.Event = (function(self, Strophe, $) {
 			}
 
 			if(directInvite.length > 0) {
-				fromUser = Candy.Core.getRoster().get(msg.attr('from'));
-				room = Candy.Core.getRoom(directInvite.attr('jid'));
+				if (!fromUser = Candy.Core.getRoster().get(msg.attr('from'))) {
+					var fromUser = new Candy.Core.Contact;
+					fromUser.data.jid = msg.attr('from');
+					fromUser.data.inRoster = false;
+				}
 
 				/*
 				 * (Candy.Core.Chatroom) room -
@@ -493,7 +507,7 @@ Candy.Core.Event = (function(self, Strophe, $) {
 				 * (String) continuedThread -
 				 */
 				invite = {
-					room: room,
+					roomJid: directInvite.attr('jid'),
 					from: fromUser,
 					reason: directInvite.attr('reason'),
 					password: directInvite.attr('password'),
