@@ -81,22 +81,26 @@ Candy.View.Pane = (function(self, $) {
       self.PrivateRoom.setStatus(roomJid, 'join');
 
 
-
       // We can't track the presence of a user if it's not a conference jid
       if(isNoConferenceRoomJid) {
         self.Chat.infoMessage(roomJid, $.i18n._('presenceUnknownWarningSubject'), $.i18n._('presenceUnknownWarning'));
       }
 
-      evtData.element = self.Room.getPane(roomJid);
+      var roomElement = self.Room.getPane(roomJid);
+      var roomObject = Candy.Core.getRoom(roomJid);
       /** Event: candy:view.private-room.after-open
        * After opening a new private room
        *
        * Parameters:
-       *   (String) roomJid - Room JID
        *   (String) type - 'chat'
        *   (jQuery.Element) element - User element
+       *   (Candy.Core.Chatroom) room - the room object
        */
-      $(Candy).triggerHandler('candy:view.private-room.after-open', evtData);
+      $(Candy).triggerHandler('candy:view.private-room.after-open', {
+        room: roomObject,
+        type: evtData.type,
+        element: roomElement
+      });
     },
 
     /** Function: setStatus
