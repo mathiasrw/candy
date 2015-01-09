@@ -49,7 +49,7 @@ Candy.View.Pane = (function(self, $) {
         usercountDiff = -1,
         userElem = $('#user-' + roomId + '-' + userId),
         evtData = {
-          'roomJid' : roomJid,
+          'room' : Candy.Core.getRoom(roomJid),
           'user' : user,
           'action': action,
           'element': userElem
@@ -59,7 +59,7 @@ Candy.View.Pane = (function(self, $) {
        * Before updating the roster of a room
        *
        * Parameters:
-       *   (String) roomJid - Room JID
+       *   (Candy.Core.Chatroom) room - Room object
        *   (Candy.Core.ChatUser) user - User
        *   (String) action - [join, leave, kick, ban]
        *   (jQuery.Element) element - User element
@@ -171,17 +171,13 @@ Candy.View.Pane = (function(self, $) {
         Candy.View.Pane.Chat.Toolbar.updateUsercount(Candy.View.Pane.Chat.rooms[roomJid].usercount);
       }
 
-
-      // in case there's been a join, the element is now there (previously not)
-      evtData.element = $('#user-' + roomId + '-' + userId);
       /** Event: candy:view.roster.after-update
        * After updating a room's roster
        *
        * Parameters:
-       *   (String) roomJid - Room JID
+       *   (Candy.Core.Chatroom) room - Room object
        *   (Candy.Core.ChatUser) user - User
        *   (String) action - [join, leave, kick, ban]
-       *   (jQuery.Element) element - User element
        */
       $(Candy).triggerHandler('candy:view.roster.after-update', evtData);
     },
