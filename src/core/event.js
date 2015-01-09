@@ -481,8 +481,6 @@ Candy.Core.Event = (function(self, Strophe, $) {
 					reason = reasonNode.text();
 				}
 
-				fromUser.jid = mediatedInvite.attr('from');
-
 				invite = {
 					roomJid: msg.attr('from'),
 					from: fromUser,
@@ -498,14 +496,6 @@ Candy.Core.Event = (function(self, Strophe, $) {
 					fromUser.data.jid = msg.attr('from');
 					fromUser.data.inRoster = false;
 				}
-
-				/*
-				 * (Candy.Core.Chatroom) room -
-				 * (Candy.Core.Contact) from -
-				 * (String) reason -
-				 * (String) password -
-				 * (String) continuedThread -
-				 */
 				invite = {
 					roomJid: directInvite.attr('jid'),
 					from: fromUser,
@@ -515,6 +505,13 @@ Candy.Core.Event = (function(self, Strophe, $) {
 				};
 			}
 
+			/*
+			 * (Candy.Core.Chatroom) room -
+			 * (Candy.Core.Contact) from -
+			 * (String) reason -
+			 * (String) password -
+			 * (String) continuedThread -
+			 */
 			return invite;
 		},
 
