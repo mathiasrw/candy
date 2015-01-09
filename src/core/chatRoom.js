@@ -4,6 +4,7 @@
  * Authors:
  *   - Patrick Stadler <patrick.stadler@gmail.com>
  *   - Michael Weibel <michael.weibel@gmail.com>
+ *   - Melissa Noelle <madamei@mojolingo.com>
  *
  * Copyright:
  *   (c) 2011 Amiado Group AG. All rights reserved.
@@ -20,74 +21,74 @@
  *   (String) roomJid - Room jid
  */
 Candy.Core.ChatRoom = function(options) {
-	/** Object: room
-	 * (String) jid
-	 * (String) name
-	 * (String) type (chat|groupchat)
-	 * (String) topic
-	 * (Integer) messageCount
-	 */
-	this.room = {
-		jid: options.roomJid,
-		name: options.roomName || Strophe.getNodeFromJid(options.roomJid),
-		type: options.roomType,
-		topic: null,
-		messageCount: 0
-	};
+  /** Object: room
+   * (String) jid
+   * (String) name
+   * (String) type (chat|groupchat)
+   * (String) topic
+   * (Integer) messageCount
+   */
+  this.room = {
+    jid: options.roomJid,
+    name: options.roomName || Strophe.getNodeFromJid(options.roomJid),
+    type: options.roomType,
+    topic: null,
+    messageCount: 0
+  };
 
-	/** Variable: user
-	 * Current local user of this room.
-	 */
-	this.user = null;
+  /** Variable: user
+   * Current local user of this room.
+   */
+  this.user = null;
 
-	/** Variable: Roster
-	 * Candy.Core.ChatRoster instance
-	 */
-	this.roster = new Candy.Core.ChatRoster();
+  /** Variable: Roster
+   * Candy.Core.ChatRoster instance
+   */
+  this.roster = new Candy.Core.ChatRoster();
 
-	// DOM-related information for this room.
-	this.dom = {
-		id: options.domId,
-		scrollPosition: options.scrollPosition || -1,
-		tab: null,
-		form: null
-	}
+  // DOM-related information for this room.
+  this.dom = {
+    id: options.domId,
+    scrollPosition: options.scrollPosition || -1,
+    tab: null,
+    form: null
+  }
 };
 
 Candy.Core.ChatRoom.prototype.setTopic = function(topic) {
-	this.room.topic = topic;
+  this.room.topic = topic;
 };
 
 Candy.Core.ChatRoom.prototype.getType = function() {
-	return this.room.type;
+  return this.room.type;
 };
 
 Candy.Core.ChatRoom.prototype.incrementMessageCount = function() {
-	this.room.messageCount += 1;
-	return this.room.messageCount;
+  this.room.messageCount += 1;
+  return this.room.messageCount;
 };
 
 Candy.Core.ChatRoom.prototype.getUserCount = function() {
-	return Object.keys(this.roster.items).length;
+  return Object.keys(this.roster.items).length;
 };
 
 Candy.Core.ChatRoom.prototype.getDomElement = function() {
-	return self.Room.getPane(this.room.jid);
+  return this.Room.getPane(this.room.jid);
 };
 
 Candy.Core.ChatRoom.prototype.getDomTab = function() {
-	return self.Chat.getTab(roomJid);
+  return this.Chat.getTab(roomJid);
 };
 
 Candy.Core.ChatRoom.prototype.getDomForm = function() {
-	return self.Room.getPane(roomJid, '.message-form');
+  return this.Room.getPane(roomJid, '.message-form');
 };
 
 Candy.Core.ChatRoom.prototype.addRoomDom = function(chatRoomContainerSelector) {
-	$(chatRoomContainerSelector).append(Mustache.to_html(Candy.View.Template.Room.pane, {
-    roomId: self.dom.id,
-    roomJid: self.room.jid,
-    roomType: self.room.type,
+  $(chatRoomContainerSelector).append(Mustache.to_html(Candy.View.Template.Room.pane, {
+    roomId: this.dom.id,
+    roomJid: this.room.jid,
+    roomType: this.room.type,
     form: {
       _messageSubmit: $.i18n._('messageSubmit')
     },
@@ -100,8 +101,8 @@ Candy.Core.ChatRoom.prototype.addRoomDom = function(chatRoomContainerSelector) {
     form: Candy.View.Template.Room.form
   }));
 
-  self.Chat.addTab(roomJid, roomName, roomType);
-  self.Room.getPane(roomJid, '.message-form').submit(self.Message.submit);
+  this.Chat.addTab(this.room.jid, roomName, roomType);
+  this.Room.getPane(this.room.jid, '.message-form').submit(Candy.View.Pane.Message.submit);
 
   return this.getDomElement();
 };
@@ -113,7 +114,7 @@ Candy.Core.ChatRoom.prototype.addRoomDom = function(chatRoomContainerSelector) {
  *   (Candy.Core.ChatUser) user - Chat user
  */
 Candy.Core.ChatRoom.prototype.setUser = function(user) {
-	this.user = user;
+  this.user = user;
 };
 
 /** Function: getUser
@@ -123,7 +124,7 @@ Candy.Core.ChatRoom.prototype.setUser = function(user) {
  *   (Object) - Candy.Core.ChatUser instance or null
  */
 Candy.Core.ChatRoom.prototype.getUser = function() {
-	return this.user;
+  return this.user;
 };
 
 /** Function: getJid
@@ -133,7 +134,7 @@ Candy.Core.ChatRoom.prototype.getUser = function() {
  *   (String) - Room jid
  */
 Candy.Core.ChatRoom.prototype.getJid = function() {
-	return this.room.jid;
+  return this.room.jid;
 };
 
 /** Function: setName
@@ -143,7 +144,7 @@ Candy.Core.ChatRoom.prototype.getJid = function() {
  *   (String) name - Room name
  */
 Candy.Core.ChatRoom.prototype.setName = function(name) {
-	this.room.name = name;
+  this.room.name = name;
 };
 
 /** Function: getName
@@ -153,7 +154,7 @@ Candy.Core.ChatRoom.prototype.setName = function(name) {
  *   (String) - Room name
  */
 Candy.Core.ChatRoom.prototype.getName = function() {
-	return this.room.name;
+  return this.room.name;
 };
 
 /** Function: setRoster
@@ -163,7 +164,7 @@ Candy.Core.ChatRoom.prototype.getName = function() {
  *   (Candy.Core.ChatRoster) roster - Chat roster
  */
 Candy.Core.ChatRoom.prototype.setRoster = function(roster) {
-	this.roster = roster;
+  this.roster = roster;
 };
 
 /** Function: getRoster
@@ -173,5 +174,5 @@ Candy.Core.ChatRoom.prototype.setRoster = function(roster) {
  *   (Candy.Core.ChatRoster) - instance
  */
 Candy.Core.ChatRoom.prototype.getRoster = function() {
-	return this.roster;
+  return this.roster;
 };
