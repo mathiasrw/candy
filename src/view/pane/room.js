@@ -93,17 +93,22 @@ Candy.View.Pane = (function(self, $) {
       self.Chat.addTab(roomJid, roomName, roomType);
       self.Room.getPane(roomJid, '.message-form').submit(self.Message.submit);
 
-      evtData.element = self.Room.getPane(roomJid);
+       var roomElement = self.Room.getPane(roomJid);
+       var roomObject = Candy.Core.getRoom(roomJid);
 
       /** Event: candy:view.room.after-add
        * After initialising a room
        *
        * Parameters:
-       *   (String) roomJid - Room JID
+       *   (Candy.Core.Chatroom) room - room object
        *   (String) type - Room Type
        *   (jQuery.Element) element - Room element
        */
-      $(Candy).triggerHandler('candy:view.room.after-add', evtData);
+      $(Candy).triggerHandler('candy:view.room.after-add', {
+        room: roomObject,
+        element: roomElement,
+        type: evtData.type
+      });
 
       return roomId;
     },
